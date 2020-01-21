@@ -1,5 +1,6 @@
 const express = require('express');
 
+const Accounts = require('./data/db-helpers');
 const db = require('./data/dbConfig.js');
 
 const server = express();
@@ -8,7 +9,7 @@ server.use(express.json());
 
 //GET -> General
 server.get('/', (req, res) => {
-  db('accounts')
+  Accounts.find()
     .then(accounts => {
       res.status(200).json(accounts);
     })
@@ -19,7 +20,9 @@ server.get('/', (req, res) => {
 
 //GET -> Specific
 server.get('/:id', (req, res) => {
-  db('accounts').where({ id: req.params.id})
+  const { id } = req.params;
+  
+  Accounts.findById(id)
     .then(account => {
       res.status(200).json(account);
     })
