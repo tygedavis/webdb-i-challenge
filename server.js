@@ -39,4 +39,15 @@ server.put('/:id', (req, res) => {
     });
 });
 
+//DELETE -> Delete an account
+server.delete('/:id', (req,res) => {
+  db('accounts').where({ id: req.params.id}).del()
+    .then(deleted => {
+      res.status(200).json(deleted);
+    })
+    .catch(err => {
+      res.status(500).json({ error: "There was an error deleting the account data" });
+    });
+});
+
 module.exports = server;
