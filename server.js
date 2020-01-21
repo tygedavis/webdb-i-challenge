@@ -28,4 +28,15 @@ server.post('/', (req,res) => {
     });
 });
 
+//PUT -> Update an account
+server.put('/:id', (req, res) => {
+  db('accounts').where({ id: req.params.id}).update(req.body)
+    .then(updated => {
+      res.status(200).json(updated)
+    })
+    .catch(err => {
+      res.status(500).json({ error: "There was an error updating the account data" });
+    });
+});
+
 module.exports = server;
