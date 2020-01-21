@@ -1,7 +1,6 @@
 const express = require('express');
 
 const Accounts = require('./data/db-helpers');
-const db = require('./data/dbConfig.js');
 
 const server = express();
 
@@ -21,7 +20,7 @@ server.get('/', (req, res) => {
 //GET -> Specific
 server.get('/:id', (req, res) => {
   const { id } = req.params;
-  
+
   Accounts.findById(id)
     .then(account => {
       res.status(200).json(account);
@@ -33,7 +32,7 @@ server.get('/:id', (req, res) => {
 
 //POST -> General
 server.post('/', (req,res) => {
-  db('accounts').insert(req.body)
+  Accounts.insert(req.body)
     .then(newAccount => {
       res.status(201).json(newAccount);
     })
@@ -44,7 +43,9 @@ server.post('/', (req,res) => {
 
 //PUT -> Update an account
 server.put('/:id', (req, res) => {
-  db('accounts').where({ id: req.params.id}).update(req.body)
+  const { id } = req.params;
+
+  Accounts.update(id, req.body)
     .then(updated => {
       res.status(200).json(updated)
     })
@@ -55,7 +56,9 @@ server.put('/:id', (req, res) => {
 
 //DELETE -> Delete an account
 server.delete('/:id', (req,res) => {
-  db('accounts').where({ id: req.params.id}).del()
+  const { id } = req.params;
+
+  Accounts.remove({ id })
     .then(deleted => {
       res.status(200).json(deleted);
     })
