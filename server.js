@@ -17,6 +17,17 @@ server.get('/', (req, res) => {
     });
 });
 
+//GET -> Specific
+server.get('/:id', (req, res) => {
+  db('accounts').where({ id: req.params.id})
+    .then(account => {
+      res.status(200).json(account);
+    })
+    .catch(err => {
+      res.status(500).json({ error: "There was an error retrieving the account data" });
+    });
+});
+
 //POST -> General
 server.post('/', (req,res) => {
   db('accounts').insert(req.body)
